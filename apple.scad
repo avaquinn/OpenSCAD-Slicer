@@ -32,5 +32,5 @@ module build_apple() {
     }
 }
 
-build_apple();
+color([1, 0, 0]) build_apple();
 
