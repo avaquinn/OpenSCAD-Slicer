@@ -13,7 +13,6 @@ flatten = false;
 slice_thickness = shape_height/(slice_number +(slice_number-1)*slice_ratio);
 gap_thickness = slice_thickness*slice_ratio;
 
-
 /*
 Stuff to do: 
 - height determination
@@ -21,8 +20,6 @@ Stuff to do:
 - pass array of output slices
 
 */
-
-slicer(stepped, flatten)egg();
 
 module slicer(stepped, flatten){
     if(stepped == false){
@@ -42,32 +39,9 @@ module slicer(stepped, flatten){
         }
     }
 }
-module egg(){
-    difference(){
-        translate([0,0,10])sphere(r=10);
-        rotate([20,20,0])translate([0,0,10])cylinder(h=40,r=2,center=true);
-    } 
-}
 module deletion_cubes(){
-    translate([0,0,-25])cube(50, center = true);
-    translate([0,0,25+slice_thickness])cube(50, center = true);
-}
-module cut_stepped_slice(slice){
-    linear_extrude(height=slice_thickness, center = true)projection(cut = true) translate([0,0,-slice*(slice_thickness+gap_thickness)-slice_thickness/2])children();
-}
-module stepped_slice_preview(){
-    for (slice = [0:slice_number -1]){
-        translate([0,0,slice*(slice_thickness+gap_thickness)+slice_thickness/2]){
-            cut_stepped_slice(slice)children();
-        }
-    } 
-}
-module stepped_slice_maker(){
-    for (slice = [0:slice_number -1]){
-        translate([slice*20,0,slice_thickness/2]){
-            cut_stepped_slice(slice)children();
-        }
-    }
+    translate([0,0,-100])cube(200, center = true);
+    translate([0,0,100+slice_thickness])cube(200, center = true);
 }
 module cut_slice(slice){ 
     difference(){
@@ -88,4 +62,21 @@ module slice_preview(){
             cut_slice(slice)children();
         }
     } 
+}
+module cut_stepped_slice(slice){
+    linear_extrude(height=slice_thickness, center = true)projection(cut = true) translate([0,0,-slice*(slice_thickness+gap_thickness)-slice_thickness/2])children();
+}
+module stepped_slice_preview(){
+    for (slice = [0:slice_number -1]){
+        translate([0,0,slice*(slice_thickness+gap_thickness)+slice_thickness/2]){
+            cut_stepped_slice(slice)children();
+        }
+    } 
+}
+module stepped_slice_maker(){
+    for (slice = [0:slice_number -1]){
+        translate([slice*20,0,slice_thickness/2]){
+            cut_stepped_slice(slice)children();
+        }
+    }
 }
